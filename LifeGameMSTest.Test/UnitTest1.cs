@@ -1,13 +1,12 @@
-﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LifeGame.Test
+namespace LifeGameMSTest.Test
 {
     [TestClass]
-    public class LifeGameTester
+    public class UnitTest1
     {
         [TestMethod]
-        public void InitializeGameTable()
+        public void TestMethod1()
         {
         }
     }
