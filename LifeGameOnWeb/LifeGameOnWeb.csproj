@@ -7,13 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\LifeGameTable.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="babylon.d.ts" />
     <None Remove="game.ts" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <PackageReference Include="BabylonJS" Version="2.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.7.2">

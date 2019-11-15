@@ -1,0 +1,20 @@
+{
+  "name": "lifegameonweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "game.js",
+  "dependencies": {
+    "@babylonjs/core": "^4.0.3",
+    "browserify": "^16.5.0",
+    "commonjs": "0.0.1",
+    "rollup": "^1.27.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

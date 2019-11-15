@@ -9,14 +9,24 @@ namespace LifeGame
     {
         private int Abscisse { get; set; }
         private int Ordonnee { get; set; }
+        private int MaxHistoryCount { get; set; }
 
-        public LifeGameTable(int abcisse, int ordonnee)
+        public List<Case> GameTable { get; set; }
+
+        private Queue<Generation> GenerationsHistory { get; set; }
+        public int GenerationId { get; set; }
+
+
+        public LifeGameTable(int abcisse, int ordonnee, int maxHistoryCount)
         {
             Abscisse = abcisse;
             Ordonnee = ordonnee;
+            GenerationId = 1;
+            GenerationsHistory = new Queue<Generation>();
+            MaxHistoryCount = maxHistoryCount;
         }
 
-        public List<Case> InitializeTable()
+        public void InitializeTable()
         {
             List<Case> gameTable = new List<Case>();
             for (int i = 0; i < Abscisse ; i++)
@@ -26,10 +36,10 @@ namespace LifeGame
                     gameTable.Add(new Case() { X = i, Y = j, isAlive = false });
                 }
             }
-            return gameTable;
+            this.GameTable = gameTable;
         }
 
-        public void DisplayGameTable(List<Case> gameTable)
+        public void DisplayGameTable()
         {
             Console.Write("|   |");
             for (int ord = 0; ord < Ordonnee; ord++)
@@ -44,7 +54,7 @@ namespace LifeGame
                 for (int j = 0; j < Ordonnee; j++)
                 {
 
-                    Case currentCase = gameTable.First(myCase => myCase.X == i && myCase.Y == j);
+                    Case currentCase = GameTable.First(myCase => myCase.X == i && myCase.Y == j);
 
                     if (currentCase.isAlive)
                     {
@@ -54,20 +64,24 @@ namespace LifeGame
                     {
                         Console.Write(" . ");
                     }
+                    //Console.Write("v:"+currentCase.isAlive+"x:" + i + ",y:" + j);
                 }
                 Console.WriteLine();
             }
             Console.WriteLine("_____________________________");
+            Console.WriteLine("Generation : " + GenerationId);
         }
 
-        public void AdvanceGeneration(List<Case> gameTable)
+        public bool AdvanceGeneration()
         {
-            for (int i = 0; i <= 8; i++)
+            GenerationId++;
+
+            for (int i = 0; i < Abscisse; i++)
             {
-                for (int j = 0; j <= 8; j++)
+                for (int j = 0; j < Ordonnee; j++)
                 {
-                    Case currentCase = gameTable.First(myCase => myCase.X == i && myCase.Y == j);
-                    List<Case> neighbours = GetCaseNeighbours(gameTable, currentCase);
+                    Case currentCase = GameTable.First(myCase => myCase.X == i && myCase.Y == j);
+                    List<Case> neighbours = GetCaseNeighbours(GameTable, currentCase);
 
                     if (currentCase.isAlive)
                     {
@@ -85,7 +99,6 @@ namespace LifeGame
                         {
                             currentCase.isAlive = false;
                         }
-
                     }
                     else
                     {
@@ -95,21 +108,84 @@ namespace LifeGame
                     }
                 }
             }
+
+            AddToHistory();
+
+            return CheckIfGenerationStucked(MaxHistoryCount);
         }
 
+        public void AddToHistory()
+        {
+            Generation newGenInHistory = new Generation() { Id = GenerationId, GameTable = GameTable.ToList() };
+            GenerationsHistory.Enqueue(newGenInHistory);
+            Console.WriteLine("Generation " + newGenInHistory.Id + " added to history");
+            newGenInHistory.GameTable.ForEach(x => Console.Write(x.isAlive));
+
+            if (GenerationsHistory.Count == MaxHistoryCount + 1)
+            {
+                GenerationsHistory.Dequeue();
+            }
+        }
+
+        public bool CheckIfGenerationStucked(int maxHistoryCount)
+        {
+            int isSameCounter = 0;
+            if (GenerationsHistory.Count == maxHistoryCount)
+            {
+                Console.WriteLine("All history when compare : ");
+                foreach (Generation generation in GenerationsHistory)
+                {
+                    Console.WriteLine(generation.Id);
+                    generation.GameTable.ForEach(x => Console.Write(x.isAlive));
+                    Console.WriteLine();
+                }
+
+                int index = 0;
+                List<Case> previousGameTable = null;
+
+                foreach (List<Case> currentGameTable in GenerationsHistory.Select(x => x.GameTable).ToList())
+                {
+                    if (previousGameTable != null)
+                    {
+                        Console.WriteLine("Compare Generation : curent with before");
+                        currentGameTable.ForEach(x => Console.Write(x.isAlive));
+                        Console.WriteLine("with");
+                        previousGameTable.ForEach(x => Console.Write(x.isAlive));
+                        Console.WriteLine();
+
+                        if (currentGameTable.SequenceEqual(previousGameTable, new CaseComparer()))
+                        {
+                            isSameCounter++;
+                            Console.WriteLine("IS SAME");
+                        }
+                        else
+                        {
+                            Console.WriteLine("IS NOT SAME");
+                        }
+                    }
+
+                    Console.WriteLine();
+                    index++;
+
+                    previousGameTable = new List<Case>(currentGameTable);
+                }
+            }
+
+            return isSameCounter == maxHistoryCount - 1;
+        }
 
         public List<Case> GetCaseNeighbours(List<Case> gameTable, Case currentCase)
         {
             List<Case> neighbours = new List<Case>();
 
-            if (currentCase.X > 0 && currentCase.X < Abscisse)
+            if (currentCase.X > 0 && currentCase.X < Abscisse - 1)
             {
                 //Case gauche
                 neighbours.Add(gameTable.First(myCase => myCase.X == currentCase.X - 1 && myCase.Y == currentCase.Y));
                 //Case droite
                 neighbours.Add(gameTable.First(myCase => myCase.X == currentCase.X + 1 && myCase.Y == currentCase.Y));
 
-                if (currentCase.Y > 0 && currentCase.Y < Ordonnee)
+                if (currentCase.Y > 0 && currentCase.Y < Ordonnee - 1)
                 {
                     //Case haut gauche
                     neighbours.Add(gameTable.First(myCase => myCase.X == currentCase.X - 1 && myCase.Y == currentCase.Y - 1));
@@ -148,7 +224,7 @@ namespace LifeGame
             {
                 //Case droite
                 neighbours.Add(gameTable.First(myCase => myCase.X == currentCase.X + 1 && myCase.Y == currentCase.Y));
-                if (currentCase.Y > 0 && currentCase.Y < Ordonnee)
+                if (currentCase.Y > 0 && currentCase.Y < Ordonnee - 1)
                 {
                     //Case haut droite
                     neighbours.Add(gameTable.First(myCase => myCase.X == currentCase.X + 1 && myCase.Y == currentCase.Y - 1));
@@ -167,7 +243,7 @@ namespace LifeGame
                     //Case bas
                     neighbours.Add(gameTable.First(myCase => myCase.X == currentCase.X && myCase.Y == currentCase.Y + 1));
                 }
-                else if (currentCase.Y == Ordonnee)
+                else if (currentCase.Y == Ordonnee - 1)
                 {
                     //Case haut
                     neighbours.Add(gameTable.First(myCase => myCase.X == currentCase.X && myCase.Y == currentCase.Y - 1));
@@ -176,11 +252,11 @@ namespace LifeGame
 
                 }
             }
-            else if (currentCase.X == Abscisse)
+            else if (currentCase.X == Abscisse - 1)
             {
                 //Case gauche
                 neighbours.Add(gameTable.First(myCase => myCase.X == currentCase.X - 1 && myCase.Y == currentCase.Y));
-                if (currentCase.Y > 0 && currentCase.Y < Ordonnee)
+                if (currentCase.Y > 0 && currentCase.Y < Ordonnee - 1)
                 {
                     //Case bas
                     neighbours.Add(gameTable.First(myCase => myCase.X == currentCase.X && myCase.Y == currentCase.Y + 1));
@@ -198,7 +274,7 @@ namespace LifeGame
                     //Case bas
                     neighbours.Add(gameTable.First(myCase => myCase.X == currentCase.X && myCase.Y == currentCase.Y + 1));
                 }
-                else if (currentCase.Y == Ordonnee)
+                else if (currentCase.Y == Ordonnee - 1)
                 {
                     //Case haut gauche
                     neighbours.Add(gameTable.First(myCase => myCase.X == currentCase.X - 1 && myCase.Y == currentCase.Y - 1));

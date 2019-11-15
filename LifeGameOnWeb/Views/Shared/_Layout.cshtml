@@ -15,6 +15,7 @@
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
+    <script>var exports = {};</script>
     <link rel="stylesheet" href="~/css/site.css" />
     <!-- Link to the last version of BabylonJS -->
     <script src="https://preview.babylonjs.com/babylon.js"></script>
@@ -22,6 +23,7 @@
     <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
     <!-- Link to pep.js to ensure pointer events work consistently in all browsers -->
     <script src="https://code.jquery.com/pep/0.4.1/pep.js"></script>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <style>
         html, body {
             overflow: hidden;
@@ -94,7 +96,6 @@
         </script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>
