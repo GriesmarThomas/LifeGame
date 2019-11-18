@@ -29,7 +29,7 @@ namespace LifeGame
         public void InitializeTable()
         {
             List<Case> gameTable = new List<Case>();
-            for (int i = 0; i < Abscisse ; i++)
+            for (int i = 0; i < Abscisse; i++)
             {
                 for (int j = 0; j < Ordonnee; j++)
                 {
@@ -48,23 +48,17 @@ namespace LifeGame
             }
             Console.WriteLine();
 
-            for (int i = 0; i < Abscisse ; i++)
+            for (int i = 0; i < Abscisse; i++)
             {
                 Console.Write("| " + i + " |");
                 for (int j = 0; j < Ordonnee; j++)
                 {
-
                     Case currentCase = GameTable.First(myCase => myCase.X == i && myCase.Y == j);
 
                     if (currentCase.isAlive)
-                    {
                         Console.Write(" * ");
-                    }
                     else
-                    {
                         Console.Write(" . ");
-                    }
-                    //Console.Write("v:"+currentCase.isAlive+"x:" + i + ",y:" + j);
                 }
                 Console.WriteLine();
             }
@@ -75,13 +69,15 @@ namespace LifeGame
         public bool AdvanceGeneration()
         {
             GenerationId++;
+            var currentGameTable = GameTable.ConvertAll(x => x.DeepCopy());
 
             for (int i = 0; i < Abscisse; i++)
             {
                 for (int j = 0; j < Ordonnee; j++)
                 {
-                    Case currentCase = GameTable.First(myCase => myCase.X == i && myCase.Y == j);
-                    List<Case> neighbours = GetCaseNeighbours(GameTable, currentCase);
+
+                    Case currentCase = currentGameTable.First(myCase => myCase.X == i && myCase.Y == j);
+                    List<Case> neighbours = GetCaseNeighbours(currentGameTable, currentCase);
 
                     if (currentCase.isAlive)
                     {
@@ -109,17 +105,17 @@ namespace LifeGame
                 }
             }
 
-            AddToHistory();
+            this.GameTable = currentGameTable;
+
+            AddToHistory(currentGameTable);
 
             return CheckIfGenerationStucked(MaxHistoryCount);
         }
 
-        public void AddToHistory()
+        public void AddToHistory(List<Case> currentGameTable)
         {
-            Generation newGenInHistory = new Generation() { Id = GenerationId, GameTable = GameTable.ToList() };
+            Generation newGenInHistory = new Generation() { Id = GenerationId, GameTable = currentGameTable };
             GenerationsHistory.Enqueue(newGenInHistory);
-            Console.WriteLine("Generation " + newGenInHistory.Id + " added to history");
-            newGenInHistory.GameTable.ForEach(x => Console.Write(x.isAlive));
 
             if (GenerationsHistory.Count == MaxHistoryCount + 1)
             {
@@ -132,41 +128,17 @@ namespace LifeGame
             int isSameCounter = 0;
             if (GenerationsHistory.Count == maxHistoryCount)
             {
-                Console.WriteLine("All history when compare : ");
-                foreach (Generation generation in GenerationsHistory)
-                {
-                    Console.WriteLine(generation.Id);
-                    generation.GameTable.ForEach(x => Console.Write(x.isAlive));
-                    Console.WriteLine();
-                }
-
                 int index = 0;
                 List<Case> previousGameTable = null;
 
                 foreach (List<Case> currentGameTable in GenerationsHistory.Select(x => x.GameTable).ToList())
                 {
-                    if (previousGameTable != null)
+                    if (previousGameTable != null && currentGameTable.SequenceEqual(previousGameTable, new CaseComparer()))
                     {
-                        Console.WriteLine("Compare Generation : curent with before");
-                        currentGameTable.ForEach(x => Console.Write(x.isAlive));
-                        Console.WriteLine("with");
-                        previousGameTable.ForEach(x => Console.Write(x.isAlive));
-                        Console.WriteLine();
-
-                        if (currentGameTable.SequenceEqual(previousGameTable, new CaseComparer()))
-                        {
-                            isSameCounter++;
-                            Console.WriteLine("IS SAME");
-                        }
-                        else
-                        {
-                            Console.WriteLine("IS NOT SAME");
-                        }
+                        isSameCounter++;
                     }
 
-                    Console.WriteLine();
                     index++;
-
                     previousGameTable = new List<Case>(currentGameTable);
                 }
             }

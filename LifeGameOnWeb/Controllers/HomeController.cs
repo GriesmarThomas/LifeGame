@@ -14,7 +14,8 @@ namespace LifeGameOnWeb.Controllers
         public IActionResult Index()
         {
             LifeGameTable table = new LifeGameTable(10, 10);
-            List<Case> gameTable = table.InitializeTable();
+            table.InitializeTable();
+            Queue<Generation> globalGenerationsHistory = new Queue<Generation>();
 
             gameTable.First(myCase => myCase.X == 3 && myCase.Y == 5).isAlive = true;
             gameTable.First(myCase => myCase.X == 4 && myCase.Y == 5).isAlive = true;
@@ -24,13 +25,13 @@ namespace LifeGameOnWeb.Controllers
             gameTable.First(myCase => myCase.X == 6 && myCase.Y == 4).isAlive = true;
             gameTable.First(myCase => myCase.X == 5 && myCase.Y == 4).isAlive = true;
 
-            table.DisplayGameTable(gameTable);
+            table.DisplayGameTable();
 
             int count = 0;
             while (count <= 20)
             {
-                table.AdvanceGeneration(gameTable);
-                table.DisplayGameTable(gameTable);
+                table.AdvanceGeneration(globalGenerationsHistory);
+                table.DisplayGameTable();
                 //Console.ReadKey();
                 //Console.Clear();
                 count++;

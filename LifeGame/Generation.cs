@@ -8,5 +8,13 @@ namespace LifeGame
     {
         public int Id { get; set; }
         public List<Case> GameTable { get; set; }
+
+        public object DeepCopy()
+        {
+            Generation myGeneration = (Generation)this.MemberwiseClone();
+            myGeneration.Id = this.Id;
+            myGeneration.GameTable = new List<Case>(GameTable);
+            return myGeneration;
+        }
     }
 }

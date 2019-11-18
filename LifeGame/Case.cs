@@ -10,6 +10,14 @@ namespace LifeGame
         public int Y { get; set; }
 
         public bool isAlive { get; set; }
+
+        public Case DeepCopy()
+        {
+            Case myCase = (Case)this.MemberwiseClone();
+            myCase.X = X;
+            myCase.Y = Y;
+                return myCase;
+        }
     }
 
 

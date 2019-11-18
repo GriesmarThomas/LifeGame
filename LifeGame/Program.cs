@@ -7,7 +7,7 @@ namespace LifeGame
     public class Program
     {
         public const int MAX_ABCISSE = 10;
-        public const int MAX_ORDONNEE = 10;
+        public const int MAX_ORDONNEE = 32;
         public const int MAX_HISTORY_COUNT = 5;
 
         public static void Main(string[] args)
@@ -22,20 +22,22 @@ namespace LifeGame
             table.GameTable.First(myCase => myCase.X == 6 && myCase.Y == 7).isAlive = true;
             table.GameTable.First(myCase => myCase.X == 6 && myCase.Y == 4).isAlive = true;
             table.GameTable.First(myCase => myCase.X == 5 && myCase.Y == 4).isAlive = true;
-            
+
+            //table.GameTable.First(myCase => myCase.X = )
+
             table.DisplayGameTable();
 
             bool exitVar = false;
-            while(!exitVar)
+            while (!exitVar)
             {
-
                 bool isHistoryTheSame = table.AdvanceGeneration();
+                Console.Clear();
+
                 table.DisplayGameTable();
-                exitVar = isHistoryTheSame;
-                //Console.ReadKey();
-                //Console.Clear();       
+                exitVar = isHistoryTheSame;      
             }
 
+            Console.WriteLine("SIMULATION ENDED");
             Console.WriteLine("End Generation : " + table.GenerationId);
             Console.ReadKey();
         }

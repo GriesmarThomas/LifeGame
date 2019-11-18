@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LifeGameNUnit.Test", "LifeG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeGameMSTest.Test", "LifeGameMSTest.Test\LifeGameMSTest.Test.csproj", "{370402A0-2FCF-48AF-978C-6BC7FEC4427C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeGameOnWeb", "LifeGameOnWeb\LifeGameOnWeb.csproj", "{3F5B6ACE-BF68-4756-B8EC-C175B27A9F62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LifeGameOnWeb", "LifeGameOnWeb\LifeGameOnWeb.csproj", "{3F5B6ACE-BF68-4756-B8EC-C175B27A9F62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{E6D03ACA-E819-4135-8617-398D67C17641}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{3F5B6ACE-BF68-4756-B8EC-C175B27A9F62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F5B6ACE-BF68-4756-B8EC-C175B27A9F62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F5B6ACE-BF68-4756-B8EC-C175B27A9F62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6D03ACA-E819-4135-8617-398D67C17641}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6D03ACA-E819-4135-8617-398D67C17641}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6D03ACA-E819-4135-8617-398D67C17641}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6D03ACA-E819-4135-8617-398D67C17641}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
