@@ -48,10 +48,10 @@ namespace LifeGame
             }
             Console.WriteLine();
 
-            for (int i = 0; i < Abscisse; i++)
+            for (int j = 0; j < Ordonnee; j++)
             {
-                Console.Write("| " + i + " |");
-                for (int j = 0; j < Ordonnee; j++)
+                Console.Write("| " + j + " |");
+                for (int i = 0; i < Abscisse; i++)
                 {
                     Case currentCase = GameTable.First(myCase => myCase.X == i && myCase.Y == j);
 
