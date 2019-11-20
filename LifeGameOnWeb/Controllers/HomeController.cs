@@ -13,24 +13,24 @@ namespace LifeGameOnWeb.Controllers
     {
         public IActionResult Index()
         {
-            LifeGameTable table = new LifeGameTable(10, 10);
+            LifeGameTable table = new LifeGameTable(10, 10, 5);
             table.InitializeTable();
             Queue<Generation> globalGenerationsHistory = new Queue<Generation>();
 
-            gameTable.First(myCase => myCase.X == 3 && myCase.Y == 5).isAlive = true;
-            gameTable.First(myCase => myCase.X == 4 && myCase.Y == 5).isAlive = true;
-            gameTable.First(myCase => myCase.X == 5 && myCase.Y == 5).isAlive = true;
-            gameTable.First(myCase => myCase.X == 6 && myCase.Y == 6).isAlive = true;
-            gameTable.First(myCase => myCase.X == 6 && myCase.Y == 7).isAlive = true;
-            gameTable.First(myCase => myCase.X == 6 && myCase.Y == 4).isAlive = true;
-            gameTable.First(myCase => myCase.X == 5 && myCase.Y == 4).isAlive = true;
+            table.GameTable.First(myCase => myCase.X == 3 && myCase.Y == 5).isAlive = true;
+            table.GameTable.First(myCase => myCase.X == 4 && myCase.Y == 5).isAlive = true;
+            table.GameTable.First(myCase => myCase.X == 5 && myCase.Y == 5).isAlive = true;
+            table.GameTable.First(myCase => myCase.X == 6 && myCase.Y == 6).isAlive = true;
+            table.GameTable.First(myCase => myCase.X == 6 && myCase.Y == 7).isAlive = true;
+            table.GameTable.First(myCase => myCase.X == 6 && myCase.Y == 4).isAlive = true;
+            table.GameTable.First(myCase => myCase.X == 5 && myCase.Y == 4).isAlive = true;
 
             table.DisplayGameTable();
 
             int count = 0;
             while (count <= 20)
             {
-                table.AdvanceGeneration(globalGenerationsHistory);
+                table.AdvanceGeneration();
                 table.DisplayGameTable();
                 //Console.ReadKey();
                 //Console.Clear();

@@ -13,13 +13,14 @@ namespace Tests
         }
 
         [Theory]
-        [TestCase(10, 10)]
-        [TestCase(36, 22)]
-        public void InitializeGameTable(int abscisse, int ordonnee)
+        [TestCase(10, 10, 5)]
+        [TestCase(36, 22, 10)]
+        public void InitializeGameTable(int abscisse, int ordonnee, int maxHistoryCount)
         {
-            LifeGameTable table = new LifeGameTable(abscisse, ordonnee);
-            List<Case> gameTable = table.InitializeTable();
-            Assert.AreEqual(gameTable.Count, abscisse * ordonnee);
+            LifeGameTable table = new LifeGameTable(abscisse, ordonnee, maxHistoryCount);
+            table.InitializeTable();
+            
+            Assert.AreEqual(table.GameTable.Count, abscisse * ordonnee);
             Assert.Pass();
         }
     }

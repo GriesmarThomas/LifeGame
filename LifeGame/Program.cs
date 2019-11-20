@@ -24,8 +24,6 @@ namespace LifeGame
             table.GameTable.First(myCase => myCase.X == 5 && myCase.Y == 8).isAlive = true;
             table.GameTable.First(myCase => myCase.X == 5 && myCase.Y == 9).isAlive = true;
 
-            //table.GameTable.First(myCase => myCase.X = )
-
             table.DisplayGameTable();
 
             bool exitVar = false;
